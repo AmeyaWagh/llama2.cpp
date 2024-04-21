@@ -1,5 +1,9 @@
 ## llama2.cpp
 
+<p align="center">
+  <img src="assets/llama_cpp.jpeg" width="300" height="300" alt="Cute Llama">
+</p>
+
 This is a rewrite of [@karpathy](https://github.com/karpathy) llama2.c in c++. This includes a pure C++ transformer library with a tensor class implementation. Currently this library only support CPU but can be extended to use other hardware accelerators.
 
 ### Build
