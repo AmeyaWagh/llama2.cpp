@@ -2,9 +2,10 @@
 #define LLAMA2CPP_UTILS_HPP
 #include <string>
 #include <fstream>
-#include "transformer/transformer.hpp"
+#include <transformers-lite/transformer.hpp>
 
 namespace llama2cpp {
+using namespace transformers_lite;
 
 void loadModel(const std::string &checkpoint_path, TransformerConfig &config, TransformerWeights<CPU, float32_t> &weights) {
     std::ifstream file(checkpoint_path, std::ios::binary);
@@ -74,9 +75,11 @@ void loadModel(const std::string &checkpoint_path, TransformerConfig &config, Tr
     file.close();
 }
 
+#ifdef TRANSFORMERS_CUDA_ENABLED
 void loadModel(const std::string &checkpoint_path, TransformerConfig &config, TransformerWeights<CUDA, float32_t> &weights){
     //@TODO implement this
 }
+#endif
 
 
 }  // namespace llama2cpp

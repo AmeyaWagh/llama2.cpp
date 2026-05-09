@@ -4,7 +4,6 @@
 #include <llama2cpp/llama2.hpp>
 #include <llama2cpp/sampler.hpp>
 #include <llama2cpp/tokenizer.hpp>
-#include <llama2cpp/transformer/transformer.hpp>
 
 struct ConsoleArgs {
     // default parameters

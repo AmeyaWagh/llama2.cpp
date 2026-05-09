@@ -5,13 +5,14 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <llama2cpp/transformer/tensor.hpp>
+#include <transformers-lite/tensor.hpp>
 #include <memory>
 
 // ----------------------------------------------------------------------------
 // The Byte Pair Encoding (BPE) Tokenizer that translates strings <-> tokens
 
 namespace llama2cpp {
+using namespace transformers_lite;
 static constexpr const size_t BYTE_STR_SIZE = 512;
 static constexpr const int TOKEN_NOT_FOUND = -1;
 

@@ -25,18 +25,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include_directories(include)
 
-file(GLOB HDR_FILES ${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME}/transformer/*.hpp)
-
-add_library(transformer_cpp INTERFACE)
-target_sources(transformer_cpp
-        PUBLIC
-                ${HDR_FILES}
-)
-target_include_directories(transformer_cpp 
-    INTERFACE 
-        $<BUILD_INTERFACE:${PROJECT_INCLUDE_DIR}>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-
+add_subdirectory(third_party/transformers-lite-cpp)
 
 add_library(llama2cpp_core SHARED)
 target_sources(llama2cpp_core
@@ -49,10 +38,10 @@ target_sources(llama2cpp_core
 
 target_include_directories(llama2cpp_core PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/llama2cpp>
-  $<INSTALL_INTERFACE:include/llama2cpp_core>  # <prefix>/include/mylib
+  $<INSTALL_INTERFACE:include/llama2cpp_core>
 )
 set_target_properties(llama2cpp_core PROPERTIES LINKER_LANGUAGE CXX)
-target_link_libraries(llama2cpp_core transformer_cpp)
+target_link_libraries(llama2cpp_core transformers_lite)
 
 add_executable(
     run_llama src/main.cpp

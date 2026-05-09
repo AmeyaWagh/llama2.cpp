@@ -2,8 +2,8 @@
 #define LLAMA2CPP_SAMPLER_HPP
 #include <algorithm>
 #include <cstdlib>
-#include <llama2cpp/transformer/ops.hpp>
-#include <llama2cpp/transformer/types.hpp>
+#include <transformers-lite/ops.hpp>
+#include <transformers-lite/types.hpp>
 #include <memory>
 #include <string>
 
@@ -12,6 +12,7 @@
 // sampling can be done in a few ways: greedy argmax, sampling, top-p sampling
 
 namespace llama2cpp {
+using namespace transformers_lite;
 /**
  * @brief struct used when sorting probabilities during top-p sampling
  *

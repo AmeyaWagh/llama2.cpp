@@ -7,12 +7,13 @@
 
 #include "sampler.hpp"
 #include "tokenizer.hpp"
-#include "transformer/tensor.hpp"
-#include "transformer/transformer.hpp"
-#include "transformer/types.hpp"
+#include <transformers-lite/tensor.hpp>
+#include <transformers-lite/transformer.hpp>
+#include <transformers-lite/types.hpp>
 #include "utils.hpp"
 
 namespace llama2cpp {
+using namespace transformers_lite;
 
 long time_in_ms() {
     // return time in milliseconds, for benchmarking the model speed
