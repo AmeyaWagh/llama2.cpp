@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <transformers-lite/tensor.hpp>
+#include <transformers-lite/core/tensor.hpp>
 #include <memory>
 
 // ----------------------------------------------------------------------------

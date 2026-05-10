@@ -2,8 +2,8 @@
 #define LLAMA2CPP_SAMPLER_HPP
 #include <algorithm>
 #include <cstdlib>
-#include <transformers-lite/ops.hpp>
-#include <transformers-lite/types.hpp>
+#include <transformers-lite/core/ops.hpp>
+#include <transformers-lite/core/types.hpp>
 #include <memory>
 #include <string>
 

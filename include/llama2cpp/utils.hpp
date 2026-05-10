@@ -2,7 +2,7 @@
 #define LLAMA2CPP_UTILS_HPP
 #include <string>
 #include <fstream>
-#include <transformers-lite/transformer.hpp>
+#include <transformers-lite/layers/transformer.hpp>
 
 namespace llama2cpp {
 using namespace transformers_lite;
