@@ -108,11 +108,9 @@ class Llama2 {
         int next;                      // will store the next token in the sequence
         int token = prompt_tokens[0];  // kick off with the first token in the prompt
         int pos = 0;                   // position in the sequence
-        Tensor<CPU, float32_t> logits(Shape(static_cast<size_t>(m_transformer->getConfig().vocab_size)));
         while (pos < m_config.steps) {
             // forward the transformer to get logits for the next token
-
-            m_transformer->forward(token, pos, logits);
+            auto& logits = m_transformer->forward(token, pos);
 
             // advance the state machine
             if (pos < num_prompt_tokens - 1) {
@@ -170,7 +168,6 @@ class Llama2 {
         int token;             // stores the current token to feed into the transformer
         int prev_token;
         int pos = 0;  // position in the sequence
-        Tensor<CPU, float32_t> logits(Shape(static_cast<size_t>(m_transformer->getConfig().vocab_size)));
         while (pos < m_config.steps) {
             // when it is the user's turn to contribute tokens to the dialog...
             if (user_turn) {
@@ -222,7 +219,7 @@ class Llama2 {
             }
 
             // forward the transformer to get logits for the next token
-            m_transformer->forward(token, pos, logits);
+            auto& logits = m_transformer->forward(token, pos);
             next = m_sampler->sample(logits);
             pos++;
 

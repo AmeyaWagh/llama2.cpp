@@ -39,14 +39,14 @@ class Sampler {
         int next;
         if (m_temperature == 0.0f) {
             // greedy argmax sampling: take the token with the highest probability
-            next = argmax(logits);
+            next = static_cast<int>(std::max_element(logits.data(), logits.data() + logits.size()) - logits.data());
         } else {
             // apply the temperature to the logits
             for (int q = 0; q < logits.size(); q++) {
                 logits[q] /= m_temperature;
             }
             // apply softmax to the logits to get the probabilities for next token
-            softmax(logits);
+            Ops<CPU, float32_t>::softmax(logits.data(), static_cast<size_t>(logits.size()));
             // flip a (float) coin (this is our source of entropy for sampling)
             // @TODO: implement an entropy generator.
             float32_t coin = random_f32(&m_rng_state);

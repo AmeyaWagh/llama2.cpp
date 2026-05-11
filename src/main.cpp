@@ -4,6 +4,7 @@
 #include <llama2cpp/llama2.hpp>
 #include <llama2cpp/sampler.hpp>
 #include <llama2cpp/tokenizer.hpp>
+#include <llama2cpp/utils.hpp>
 
 struct ConsoleArgs {
     // default parameters
@@ -14,8 +15,9 @@ struct ConsoleArgs {
     int steps = 256;                  // number of steps to run for
     std::string prompt = "";          // prompt string
     unsigned long long rng_seed = 0;  // seed rng with time by default
-    std::string mode = "generate";    // generate|chat
+    std::string mode = "generate";    // generate|chat|export
     std::string system_prompt = "";   // the (optional) system prompt to use in chat mode
+    std::string export_dir = "";      // output directory for -m export
 
     static void error_usage() {
         std::cout << "Usage:   run <checkpoint> [options]\n" << std::endl;
@@ -27,8 +29,9 @@ struct ConsoleArgs {
         std::cout << "  -n <int>    number of steps to run for, default 256. 0 = max_seq_len\n" << std::endl;
         std::cout << "  -i <string> input prompt\n" << std::endl;
         std::cout << "  -z <string> optional path to custom tokenizer\n" << std::endl;
-        std::cout << "  -m <string> mode: generate|chat, default: generate\n" << std::endl;
+        std::cout << "  -m <string> mode: generate|chat|export, default: generate\n" << std::endl;
         std::cout << "  -y <string> (optional) system prompt in chat mode\n" << std::endl;
+        std::cout << "  -o <string> output directory for export mode\n" << std::endl;
         exit(EXIT_FAILURE);
     }
 
@@ -67,6 +70,8 @@ struct ConsoleArgs {
                 mode = std::string(argv[i + 1]);
             } else if (argv[i][1] == 'y') {
                 system_prompt = std::string(argv[i + 1]);
+            } else if (argv[i][1] == 'o') {
+                export_dir = std::string(argv[i + 1]);
             } else {
                 error_usage();
             }
@@ -94,8 +99,19 @@ int main(int argc, char **argv) {
         llama2.generate(args.prompt);
     } else if (args.mode == "chat") {
         llama2.chat(args.prompt, args.system_prompt);
+    } else if (args.mode == "export") {
+        if (args.export_dir.empty()) {
+            std::cerr << "export mode requires -o <output_dir>\n";
+            ConsoleArgs::error_usage();
+            status = EXIT_FAILURE;
+        } else {
+            llama2cpp::TransformerConfig t_config;
+            llama2cpp::TransformerWeights<llama2cpp::CPU, llama2cpp::float32_t> t_weights;
+            llama2cpp::loadModel(args.checkpoint_path, t_config, t_weights);
+            llama2cpp::exportHF(args.export_dir, t_config, t_weights);
+        }
     } else {
-        std::cerr << "unknown mode" << args.mode << std::endl;
+        std::cerr << "unknown mode: " << args.mode << std::endl;
         ConsoleArgs::error_usage();
         status = EXIT_FAILURE;
     }
